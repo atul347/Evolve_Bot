@@ -4,15 +4,19 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI
 from finbot.data_ingestion import ingestdata
 
+
 def generation(vstore):
-    retriever = vstore.as_retriever(search_kwargs={"k": 3})
+    retriever = vstore.as_retriever(search_kwargs={"k": 20})
 
     PRODUCT_BOT_TEMPLATE = """
-    Your finance bot is an expert in credit card related advice.
-    Ensure your answers are relevant to the query context and refrain from straying off-topic.
-    Your responses should be concise and informative. 
-    When the user asks for a card, suggest only Evolve cards and include clickable http links in your suggestion.
-    Else talk normally. 
+    Your finance bot is an expert in providing credit card and loan-related advice.
+    Ensure your answers are strictly relevant to the query context and do not stray off-topic. Do not provide any advice or suggestions beyond Evolve credit cards or loans.
+    Your responses should be concise and informative.
+    Recommend only Evolve credit cards or loans when the user asks for such products, and include the provided link in your recommendation without modifying it.
+    Do not suggest any product links when the user is not specifically asking for a credit card or loan.
+
+  
+
 
     CONTEXT:
     {context}
@@ -20,8 +24,8 @@ def generation(vstore):
     QUESTION: {question}
 
     YOUR ANSWER:
+    
     """
-
     prompt = ChatPromptTemplate.from_template(PRODUCT_BOT_TEMPLATE)
 
     llm = ChatOpenAI()
