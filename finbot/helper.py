@@ -13,8 +13,8 @@ def load_file():
             raw_text += text
             
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size = 1000,
-        chunk_overlap  = 200,
+        chunk_size = 200,
+        chunk_overlap  = 20,
     )
 
     docs = text_splitter.split_text(raw_text)
